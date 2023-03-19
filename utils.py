@@ -57,7 +57,7 @@ def reorder_frames(frame_list):
     for _ in range( len(frame_list)-1):
       last_img = ordered[-1]
       arg_l = np.argsort(differences[last_img]) 
-      # closest img to the current one not in the ordered list
+      # search for the closest img to the last one not in the ordered list
       i = 0
       while(arg_l[i] in ordered):
         i += 1
@@ -66,10 +66,13 @@ def reorder_frames(frame_list):
       if len(ordered) > 1:
         first_img = ordered[0]
         arg_l_start = np.argsort(differences[first_img]) 
+        # search for the closest img to the first one not in the ordered list
         i = 0
         while(arg_l_start[i] in ordered):
           i += 1
         to_add_begining = arg_l_start[i]
+        
+        # choose to add to the begining or to the end of the list
         if differences[first_img][to_add_begining] < differences[last_img][to_add]:
           ordered = [to_add_begining] + ordered
         else:
