@@ -1,6 +1,7 @@
 # Reorder-Corrupted-Videos
-A corrupt video is a video on which we added random images and then we shuffled the whole. The goal is to remove the random images and reorder the video.
-PS: The solution will save the reordered video and the reversed video.
+A corrupted video is a video that has random frames added to it and then shuffled. The goal is to remove the random images and reorder the video.
+The solution provided in this repo allows you to save the both ordered and reversed videos.
+
 
 # Dependencies
 Please install the required dependencies with:
@@ -13,8 +14,7 @@ pip install -r requirement.txt
 # How to use
 There are two modes:
 
-```corrupt``` mode: can be used to corrupt a clean video. The random images that will be added are the images in the folder ```data\outliers_to_corrupt```
-
+```corrupt``` mode: can be used to corrupt a clean video. The random images that will be added are the images in the folder ```data\outliers_to_corrupt```.
 Example:
 ```
 python .\main.py -m corrupt -v .\data\video_to_corrupt.mp4 -o .\data\corrupted_video_2.mp4 
