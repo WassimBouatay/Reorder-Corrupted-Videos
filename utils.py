@@ -18,17 +18,15 @@ def find_outliers(frames, outlier_threshold=0.1, auto=False):
 
   if auto:
     kmeans = KMeans(n_clusters=2, random_state=0, n_init="auto").fit(differences.reshape(len(differences), 1))
-    outlier_threshold = min(kmeans.cluster_centers_)[0]*5
-    m1, m2 = min(kmeans.cluster_centers_)[0], max(kmeans.cluster_centers_)[0]
     cluster_1 = differences[kmeans.labels_ == 0]
     cluster_2 = differences[kmeans.labels_ == 1]
     m1, m2 = np.mean(cluster_1), np.mean(cluster_2)
-    v1, v2 = np.std(cluster_1), np.std(cluster_2)
-    if m1 > m2:
-        m1, m2 = m2, m1
-        v1, v2 = v2, v1
-    outlier_threshold = m1 + (m2-m1)/(v1+v2)*v1
-
+    if abs(m1-m2) > 0.05:
+        v1, v2 = np.std(cluster_1), np.std(cluster_2)
+        if m1 > m2:
+            m1, m2 = m2, m1
+            v1, v2 = v2, v1
+        outlier_threshold = m1 + (m2-m1)/(v1+v2)*v1
     print('Auto threshold: {:.3f}'.format(outlier_threshold))
 
   outliers = np.array([x for x in range(len(differences)) if differences[x] > outlier_threshold])
