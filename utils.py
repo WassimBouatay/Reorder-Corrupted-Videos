@@ -9,9 +9,9 @@ from sklearn.cluster import KMeans
 def find_outliers(frames, outlier_threshold=0.1, auto=False):
   """ 
   We create a 3D color-histogram for each frame, and we compute the median histogram. 
-  Outliers are the frames are very different (in terms of cosine distance) from the median histogram. 
-  The threshold to filter outliers is fixed to 0.1 and if the flag auto is active, than the threshold will be calculated using kmeans
-  and then we search for interface between the 2 clusters based on the distance between the two centroids and the variance of the clusters
+  Outliers are the frames that are very different (in terms of cosine distance) from the median histogram. 
+  The threshold to filter outliers is fixed to 0.1 and if the flag auto is active, then the threshold will be calculated using kmeans
+  and then we search for the boundary between the 2 clusters based on the distance between the two centroids and the variance of the clusters
   """
   list_of_hist = []
   n_bins = 4
@@ -28,12 +28,13 @@ def find_outliers(frames, outlier_threshold=0.1, auto=False):
     cluster_2 = differences[kmeans.labels_ == 1]
     m1, m2 = np.mean(cluster_1), np.mean(cluster_2)
     if abs(m1-m2) > 0.05:
-        ## if the two clusters are very close, then it is morelikely that no outliers are in the video and we keep using the 0.1 threshold.
+        ## if the two clusters are very close, then it is more likely that no outliers are in the video and we keep using the 0.1 threshold.
         v1, v2 = np.std(cluster_1), np.std(cluster_2)
         if m1 > m2:
             m1, m2 = m2, m1
             v1, v2 = v2, v1
-        outlier_threshold = m1 + (m2-m1)/(v1+v2)*v1
+        alpha = (m2-m1)/(v1+v2) # alpha is chosen such that m1+alpha*v1 = m2+alpha*v2
+        outlier_threshold = m1 + alpha * v1 # the threshold is chosen to have the same distance in terms of variance to each cluster 
     print('Auto threshold: {:.3f}'.format(outlier_threshold))
 
   outliers = np.array([x for x in range(len(differences)) if differences[x] > outlier_threshold])
@@ -76,7 +77,7 @@ def reorder_frames(frame_list):
       else:
         ordered.append(to_add)
 
-    # find the real starting frame 
+    ## find the real starting frame 
     idx_max_diff = 0
     max_diff = differences[len(differences)-1][ordered[0]]
     for i in range(len(ordered)-1):
