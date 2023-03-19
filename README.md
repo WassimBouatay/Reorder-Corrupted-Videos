@@ -14,16 +14,16 @@ pip install -r requirement.txt
 # How to use
 There are two modes:
 
-```corrupt``` mode: can be used to corrupt a clean video. The random images that will be added are the images in the folder ```data\outliers_to_corrupt```.
+```corrupt``` mode: can be used to corrupt a clean video. The random images that will be added are the images in the folder ```data/outliers_to_corrupt```.
 Example:
 ```
-python .\main.py -m corrupt -v .\data\video_to_corrupt.mp4 -o .\data\corrupted_video_2.mp4 
+python ./main.py -m corrupt -v ./data/video_to_corrupt.mp4 -o ./data/corrupted_video_2.mp4 
 ```
 
 ```reorder``` mode: can be used to remove the outliers and reorder a video. 
 Example:
 ```
-python .\main.py -m reorder -v .\data\corrupted_video.mp4 -o .\output\reorder_corrupted_video.mp4 --show_outliers --auto_threshold
+python ./main.py -m reorder -v ./data/corrupted_video.mp4 -o ./output/reorder_corrupted_video.mp4 --show_outliers --auto_threshold
 ```
 
 --auto_threshold: Choses an automatique threshold to filter outliers using kmeans, otherwise 0.1 will be the default threshold.
