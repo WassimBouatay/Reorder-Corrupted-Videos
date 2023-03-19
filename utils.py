@@ -7,6 +7,12 @@ from sklearn.cluster import KMeans
 
 
 def find_outliers(frames, outlier_threshold=0.1, auto=False):
+  """ 
+  We create a 3D color-histogram for each frame, and we compute the median histogram. 
+  Outliers are the frames are very different (in terms of cosine distance) from the median histogram. 
+  The threshold to filter outliers is fixed to 0.1 and if the flag auto is active, than the threshold will be calculated using kmeans
+  and then we search for interface between the 2 clusters based on the distance between the two centroids and the variance of the clusters
+  """
   list_of_hist = []
   n_bins = 4
   for frame in frames:
@@ -22,6 +28,7 @@ def find_outliers(frames, outlier_threshold=0.1, auto=False):
     cluster_2 = differences[kmeans.labels_ == 1]
     m1, m2 = np.mean(cluster_1), np.mean(cluster_2)
     if abs(m1-m2) > 0.05:
+        ## if the two clusters are very close, then it is morelikely that no outliers are in the video and we keep using the 0.1 threshold.
         v1, v2 = np.std(cluster_1), np.std(cluster_2)
         if m1 > m2:
             m1, m2 = m2, m1
@@ -35,6 +42,12 @@ def find_outliers(frames, outlier_threshold=0.1, auto=False):
 
 
 def reorder_frames(frame_list):
+    """
+    The idea is to start from a random frame (0 for instance), then we look for the closest image to that starting image. 
+    We keep adding images from the start of the ordered list or from the end till we finish adding all images. 
+    A final step is now to find the real starting point of the video, to do so we look for the biggest different between to consecutive frames.
+    """
+    
     differences = distance.cdist(frame_list, frame_list, 'euclidean')
 
     ## First we order the frames 
