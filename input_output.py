@@ -29,12 +29,14 @@ def write_video(input_video, out, order, both_directions=True):
         out_video.write(frames[idx])
 
     if both_directions:
+        ## We also save the reversed video since we do not know if the order we made is correct in time or reversed
         out_video = cv2.VideoWriter(out[:-4]+'_reversed.mp4', cv2.VideoWriter_fourcc(*'mp4v'), fps, frame_size)
         for idx in order[::-1]:
             out_video.write(frames[idx])
 
 
 def corrupt_video(video, out):
+    ## add random images from "data/outliers_to_corrupt/" and shuffle the whole
     cap = cv2.VideoCapture(video)
     fps = cap.get(cv2.CAP_PROP_FPS)
     frame_size = (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),
