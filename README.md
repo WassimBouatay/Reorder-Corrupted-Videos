@@ -1,5 +1,6 @@
 # Reorder-Corrupted-Videos
 A corrupt video is a video on which we added random images and then we shuffled the whole. The goal is to remove the random images and reorder the video.
+PS: The solution will save the reordered video and the reversed video.
 
 # Dependencies
 Please install the required dependencies with:
