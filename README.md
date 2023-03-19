@@ -26,4 +26,5 @@ python .\main.py -m reorder -v .\data\corrupted_video.mp4 -o .\output\reorder_co
 ```
 
 --auto_threshold: Choses an automatique threshold to filter outliers using kmeans, otherwise 0.1 will be the default threshold.
+
 --show_outliers: shows the distribution of the frames compared to a median frame, and shows some of the removed frames that are counted as outliers.
