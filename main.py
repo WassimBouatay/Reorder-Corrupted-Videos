@@ -23,8 +23,7 @@ def main():
     
     elif args.mode == 'reorder':
       frames = read_video(args.video)
-      outliers, differences = find_outliers(frames, outlier_threshold=0.2,
-                               auto=args.auto_threshold)
+      outliers, differences = find_outliers(frames, outlier_threshold=0.1, auto=args.auto_threshold)
       if args.show_outliers:
         show_outliers(frames, outliers, differences)
 
