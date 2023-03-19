@@ -14,7 +14,7 @@ def find_outliers(frames, outlier_threshold=0.1, auto=False):
   and then we search for the boundary between the 2 clusters based on the distance between the two centroids and the variance of the clusters
   """
   list_of_hist = []
-  n_bins = 4
+  n_bins = 6
   for frame in frames:
     list_of_hist.append(cv2.calcHist([frame], [0, 1, 2], None, [n_bins, n_bins, n_bins], [0, 256, 0, 256, 0, 256]))
 
